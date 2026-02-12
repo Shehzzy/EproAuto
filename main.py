@@ -52,13 +52,11 @@ for row in centre_ws.iter_rows():
             date_cell = centre_ws.cell(row=cell.row, column=cell.column + 1)
             if not isinstance(date_cell, openpyxl.cell.cell.MergedCell):
                 date_cell.value = start_date.date()
-                # This format shows as "12 Feb 2026" when cell is released
                 date_cell.number_format = 'DD MMM YYYY'
         if cell.value and "End Date" in str(cell.value):
             date_cell = centre_ws.cell(row=cell.row, column=cell.column + 1)
             if not isinstance(date_cell, openpyxl.cell.cell.MergedCell):
                 date_cell.value = end_date.date()
-                # This format shows as "12 Feb 2026" when cell is released
                 date_cell.number_format = 'DD MMM YYYY'
 
 # =========================
@@ -184,18 +182,23 @@ for group_num, group in enumerate(groups, start=1):
         cell_g = student_ws.cell(row=current_row, column=7)
         cell_g.value = email_g
         cell_g.hyperlink = f"mailto:{email_g}"
-        cell_g.font = Font(color='0000FF', underline='single')  # Blue, underlined
+        cell_g.font = Font(color='0000FF', underline='single')
         
         # Alternate eMail-ID
         email_h = "projects@aptech-metro.com.pk"
         cell_h = student_ws.cell(row=current_row, column=8)
         cell_h.value = email_h
         cell_h.hyperlink = f"mailto:{email_h}"
-        cell_h.font = Font(color='0000FF', underline='single')  # Blue, underlined
+        cell_h.font = Font(color='0000FF', underline='single')
         
+        # Course Family
         student_ws.cell(row=current_row, column=9).value = "OV-ACCP Prime-7062-ACE"  # I
-        student_ws.cell(row=current_row, column=10).value = "OV-7062-ADSE"  # J
-        student_ws.cell(row=current_row, column=11).value = "ACCP Prime-Term 5"  # K
+        
+        # COURSE NAME (As per PORTAL) - CHANGED TO USE SEMESTER FIELD
+        student_ws.cell(row=current_row, column=10).value = f"OV-7062-ADSE-{student['semester']}"  # J - Course Name with semester
+        
+        # Semester Number
+        student_ws.cell(row=current_row, column=11).value = "ACCP Prime-Term 5"  # K - Keep as is
         
         # Apply yellow background to group cell
         cell_b = student_ws.cell(row=current_row, column=2)
